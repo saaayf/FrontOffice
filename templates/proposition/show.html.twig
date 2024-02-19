@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<title>Proposition</title>
+
+{% block body %}
+    <h1>Proposition</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ proposition.id }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ proposition.description }}</td>
+            </tr>
+            <tr>
+                <th>Prop_budget</th>
+                <td>{{ proposition.propBudget }}</td>
+            </tr>
+            <tr>
+                <th>Prop_delai</th>
+                <td>{{ proposition.propDelai ? proposition.propDelai|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_proposition_index') }}">back to list</a>
+
+    <a href="{{ path('app_proposition_edit', {'id': proposition.id}) }}">edit</a>
+
+    {{ include('proposition/_delete_form.html.twig') }}
+{% endblock %}

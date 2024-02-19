@@ -1,0 +1,31 @@
+{% extends 'Frontbase.html.twig' %}
+
+{% block title %} New Projet {% endblock %}
+
+{% block body %}
+    <div class="container-xxl py-5">
+        <div class="text-center">
+            <h1>Create new Projet</h1>
+        </div>
+
+        <div class="my-container">
+            {% form_theme form 'bootstrap_5_layout.html.twig' %}
+            {{ include('projet/_form.html.twig') }}
+        </div>
+        <div class="text-center p-4 pb-0">
+            <a class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft"
+               href="{{ path('app_projet_index_front') }}">Back</a>
+        </div>
+    </div>
+    <style>
+        .my-container {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 600px;
+            text-align: center;
+        }
+    </style>
+{% endblock %}

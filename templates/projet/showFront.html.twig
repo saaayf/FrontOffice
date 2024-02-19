@@ -1,0 +1,49 @@
+{% extends 'Frontbase.html.twig' %}
+
+{% block title %} Projet {% endblock %}
+
+
+
+{% block body %}
+    <h1>Projet</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ projet.id }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ projet.titre }}</td>
+            </tr>
+            <tr>
+                <th>Competences</th>
+                <td>{{ projet.competences }}</td>
+            </tr>
+            <tr>
+                <th>Budget</th>
+                <td>{{ projet.budget }}</td>
+            </tr>
+            <tr>
+                <th>Date_deb</th>
+                <td>{{ projet.dateDeb ? projet.dateDeb|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Date_fin</th>
+                <td>{{ projet.dateFin ? projet.dateFin|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Proprietaire</th>
+                <td>{{ projet.proprietaire }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <a href="{{ path('app_projet_index_front') }}">back to list</a>
+
+    <a href="{{ path('app_projet_edit_front', {'id': projet.id}) }}">edit</a>
+
+    {{ include('projet/_delete_form.html.twig') }}
+{% endblock %}
