@@ -1,4 +1,5 @@
-{% extends 'Frontbase.html.twig' %}
+{% extends 'Backbase.html.twig' %}
+
 
 {% block title %} Edit Proposition {% endblock %}
 
@@ -15,8 +16,8 @@
         </div>
         <div class="text-center p-4 pb-0">
             <a class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft"
-              href="{{  path('app_proposition_index', {'id_projet': projet_id}) }}">Back</a>
-            <form method="post" action="{{ path('app_proposition_delete', {'id': proposition.id , 'id_projet' : projet_id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+              href="{{  path('app_proposition_index_back') }}">Back</a>
+            <form method="post" action="{{ path('app_proposition_delete_back', {'id': proposition.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
                 <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ proposition.id) }}">
                 <button class="btn btn-light py-md-3 px-md-5 animated slideInRight">Delete</button>
             </form>

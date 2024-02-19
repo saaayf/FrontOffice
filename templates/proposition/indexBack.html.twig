@@ -1,0 +1,40 @@
+{% extends 'Backbase.html.twig' %}
+
+{% block title %} Propositon index {% endblock %}
+
+
+{% block body %}
+    <h1>Propositon index</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Description</th>
+            <th>Prop_budget</th>
+            <th>Prop_delai</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for proposition in propositions %}
+            <tr>
+                <td>{{ proposition.id }}</td>
+                <td>{{ proposition.description }}</td>
+                <td>{{ proposition.propBudget }}</td>
+                <td>{{ proposition.propDelai ? proposition.propDelai|date('Y-m-d') : '' }}</td>
+
+                <td>
+                    <a href="{{ path('app_proposition_edit_back', {'id': proposition.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}
