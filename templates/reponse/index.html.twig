@@ -1,0 +1,41 @@
+{% extends "Frontbase.html.twig" %}
+
+{% block title %}Reponses{% endblock %}
+
+{% block body %}
+
+<!-- Reponses Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row justify-content-start">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="section-title bg-white text-center text-primary px-3">Reponses</h6>
+                <h1 class="mb-5"> Reponses </h1>
+            </div>
+            <div class="row g-4 justify-content-center">
+                {% for reponse in list %}
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="course-item bg-light">
+                            <div class="text-center p-4 pb-0">
+                                <i class="fa fa-3x fa-globe text-primary mb-4"></i>
+                                <h2 class="mb-4">{{ reponse.subject }}</h2>
+                                <h3 class="mb-0">{{ reponse.message }}</h3>
+                                <p>{{ reponse.createdAt|date('Y-m-d H:i:s') }}</p>
+                            </div>
+                        </div>
+                    <a class="btn btn-outline-primary" href={{ path('delete_reponse',{'id':reponse.id}) }}">Delete</a>
+                    <a class="btn btn-outline-primary" href={{ path('update_reponse',{'idrep':reponse.id}) }}">Update</a>
+
+                    </div>
+                {% else %}
+                    <tr>
+                        <td colspan="8">No reponse found</td>
+                    </tr>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Reponses End -->
+
+{% endblock %}

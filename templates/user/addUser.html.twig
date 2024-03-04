@@ -1,0 +1,67 @@
+{% extends 'Back/base.html.twig' %}
+
+{% block title %}
+    Add New User
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h1 class="display-3 font-weight-bold text-white text-center">Add New User</h1>
+
+            <div class="container">
+                {% if form_errors(f) %}
+                    <div class="alert alert-danger">
+                        {{ form_errors(f) }}
+                    </div>
+                {% endif %}
+
+                {{ form_start(f, {'attr': {'novalidate': 'novalidate', 'class': 'my-4', 'style': 'background-color: rgba(173, 216, 230, 0.8); padding: 20px; border-radius: 15px;'}}) }}
+
+                <div class="col-6">
+                    {{ form_label(f.username) }}
+                    {{ form_widget(f.username, {'attr': {'class': 'form-control'}}) }}
+                    <div class="form-error-message">
+                        {{ form_errors(f.username) }}
+                    </div>
+                </div>
+                <div class="col-6">
+                    {{ form_label(f.email) }}
+                    {{ form_widget(f.email, {'attr': {'class': 'form-control'}}) }}
+                    <div class="form-error-message">
+                        {{ form_errors(f.email) }}
+                    </div>
+                </div>
+                <div class="col-6">
+                    <label for="user_roles">Role</label>
+                    {{ form_widget(f.roles, {'attr': {'class': 'form-control'}}) }}
+                    <div class="form-error-message">
+                        {{ form_errors(f.roles) }}
+                    </div>
+                </div>
+                <div class="form-check">
+                    {{ form_label(f.isVerified, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                    {{ form_widget(f.isVerified, {'attr': {'class': 'form-check-input'}}) }}
+                    <div class="form-error-message">
+                        {{ form_errors(f.isVerified) }}
+                    </div>
+                </div>
+                <div class="col-6">
+                    {{ form_label(f.password) }}
+                    {{ form_widget(f.password, {'attr': {'class': 'form-control'}}) }}
+                    <div class="form-error-message">
+                        {{ form_errors(f.password) }}
+                    </div>
+                </div>
+
+                <div class="form-group text-center mt-4">
+                    {{ form_widget(f.save, {'attr': {'class': 'btn btn-md btn-primary w-100'}}) }}
+                </div>
+                
+                <a href="{{ path('app_admin') }}" style="text-decoration: underline;">Back to list users</a>
+
+                {{ form_end(f) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

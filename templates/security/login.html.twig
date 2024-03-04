@@ -1,0 +1,116 @@
+<div class="d-flex justify-content-between align-items-center bg-light py-3 px-4">
+    <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+        <h2 class="m-0 text-secondary">
+            SkillSeeker
+        </h2>
+    </a>
+</div>
+
+
+
+{% block body %}
+    <div class="text-center">
+      <h3>
+        Optimize your career trajectory
+      </h3>
+    </div>
+
+    <form method="post" class="form-container">
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+        <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+        
+        <!-- Email input -->
+        <div class="form-outline mb-4">
+            <label for="inputEmail">Email address</label>
+            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus  placeholder="Enter email">
+        </div>
+
+        <!-- Password input -->
+        <div class="form-outline mb-4">
+            <label for="inputPassword">Password</label>
+            <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required  placeholder="Password">
+        </div>
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+        <!-- Remember me and Forgot password section -->
+        <div class="row mb-4">
+            <div class="col d-flex justify-content-center">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked>
+                    <label class="form-check-label" for="form2Example31"> Remember me </label>
+                </div>
+            </div>
+
+            <div class="col">
+                <a href="{{ path('app_forgot_password_request') }}">Forgot password?</a>
+            </div>
+        </div>
+
+        <div class="text-center">
+           <p>Not a member? <a href="{{ path('app_register') }}">Register</a></p>
+        </div>
+
+        <!-- Submit button -->
+        <button class="btn btn-lg btn-primary btn-block mb-4" type="submit">Sign in</button>
+
+
+    </form>
+{% endblock %}
+
+{% block stylesheets %}
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <!-- Other custom styles -->
+    <style>
+        /* Custom Styles for Login Form */
+        body {
+            background-color: #f8f9fa; /* Set a background color for the body */
+        }
+
+        .form-container {
+            max-width: 400px; /* Adjust the maximum width of the form container */
+            margin: auto;
+            padding: 20px;
+            margin-top: 50px; /* Add space from the top */
+            background-color: #ffffff; /* Set a background color for the form container */
+            border: 1px solid #dee2e6; /* Add a border to the form container */
+            border-radius: 10px; /* Add rounded corners to the form container */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+        }
+
+        .form-container h1 {
+            text-align: center; /* Center the heading */
+        }
+
+        .form-outline {
+            margin-bottom: 20px; /* Add space between form elements */
+        }
+
+        .form-check {
+            text-align: left; /* Align the checkbox label to the left */
+        }
+
+        /* Add more custom styles as needed */
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .form-container {
+                max-width: 100%; /* Adjust the maximum width for smaller screens */
+                margin-top: 20px; /* Reduce space from the top for smaller screens */
+            }
+        }
+
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    <!-- Include jQuery, Popper.js, and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'Backbase.html.twig' %}
+
+{% block title %} Manage Users {% endblock %}
+
+{% block body %}
+    {% set successFlash = app.session.flashbag.get('success') %}
+    {% if successFlash is not empty %}
+        <div id="successAlert" class="alert alert-success mt-4" style="display: none; position: fixed; top: 0; left: 50%; transform: translateX(-50%); z-index: 9999;">
+            <span class="iconify" data-icon="carbon:checkmark-outline" data-inline="false"></span>
+            {% for message in successFlash %}
+                {{ message|raw }}<br>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="row align-items-center my-5">
+        <div class="col-md-7">
+            <h1 class="display-3 font-weight-bold text-white">Manage Users</h1>
+        </div>
+        <div class="col-md-5 text-end">
+            <a href="{{ path('add') }}" class="btn btn-lg btn-info">
+                <i class="fa fa-plus" aria-hidden="true">&nbsp;</i>
+                Add User</a>
+        </div>
+    </div>
+    <div class="container-xl">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="bg-dark text-white">
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Roles</th>
+                        <th>Vérification</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.getFormattedRoles() }}</td>
+                            <td>{{ user.isVerified}}</td>
+                            <td>
+                                <a href="{{ path('edit', {'id': user.id}) }}" class="btn btn-success">Update</a>
+                                <a href="{{ path('remove', {'id': user.id}) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de supprimer cet utilisateur?')">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% for projet in projets %}
+    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="course-item bg-light">
+
+            <div class="text-center p-4 pb-0">
+                <i class="fa fa-3x fa-globe text-primary mb-4"></i>
+                <h2 class="mb-4">{{ projet.titre }}</h2>
+                <h3 class="mb-0">{{ projet.budget }}</h3>
+                <h6 class="mb-4">{{ projet.competences }}</h6>
+                <a class="btn btn-primary"
+                   href="{{ path('app_projet_show_front', {'id': projet.id}) }}">show</a>
+                <a class="btn btn-outline-primary"
+                   href="{{ path('app_projet_edit_front', {'id': projet.id}) }}">edit</a>
+                <a class="btn btn-primary"
+                   href="{{ path('app_proposition_index_My', {'id_projet': projet.id}) }}">show propositions</a>
+            </div>
+            <div class="d-flex border-top">
+                <small class="flex-fill text-center border-end py-2"><i
+                            class="fa fa-user-tie text-primary me-2"></i>{{ projet.dateDeb ? projet.dateDeb|date('Y-m-d') : '' }}
+                </small>
+                <small class="flex-fill text-center border-end py-2"><i
+                            class="fa fa-clock text-primary me-2"></i>{{ projet.dateFin ? projet.dateFin|date('Y-m-d') : '' }}
+                </small>
+                <small class="flex-fill text-center py-2"><i
+                            class="fa fa-user text-primary me-2"></i>{{ projet.proprietaire }}</small>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <tr>
+        <td colspan="8">no projets found</td>
+    </tr>
+{% endfor %}

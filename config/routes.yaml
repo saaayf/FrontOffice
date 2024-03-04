@@ -1,3 +1,104 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+app_admin:
+    path: /listUsers
+    controller: App\Controller\UserController::admin
+add:
+    path: /add
+    controller: App\Controller\UserController::add
+edit:
+    path: /edit/{id}
+    controller: App\Controller\UserController::edit
+remove:
+    path: /remove/{id}
+    controller: App\Controller\UserController::remove
+
+list_profile_front:
+    path: /front/listeprofile
+    controller: 'App\Controller\UserController::listuserFront'
+
+search_skills:
+    path: /search-skills
+    controller: App\Controller\OfferController::searchSkills
+    methods: GET
+# Routes pour l'entretien
+app_entretientf_index:
+    path: /entretientf
+    controller: 'App\Controller\EntretientfController::index'
+
+app_entretientf_new:
+    path: /entretientf/new
+    controller: 'App\Controller\EntretientfController::new'
+
+app_entretientf_show:
+    path: /entretientf/{id}
+    controller: 'App\Controller\EntretientfController::show'
+
+app_entretientf_edit:
+    path: /entretientf/{id}/edit
+    controller: 'App\Controller\EntretientfController::edit'
+
+app_entretientf_delete:
+    path: /entretientf/{id}/delete
+    controller: 'App\Controller\EntretientfController::delete'
+
+# Routes pour l'entretien
+app_entretient_index:
+    path: /entretient
+    controller: 'App\Controller\EntretientController::index'
+
+app_entretient_new:
+    path: /entretient/new
+    controller: 'App\Controller\EntretientController::new'
+
+app_entretient_show:
+    path: /entretient/{id}
+    controller: 'App\Controller\EntretientController::show'
+
+app_entretient_edit:
+    path: /entretient/{id}/edit
+    controller: 'App\Controller\EntretientController::edit'
+
+app_entretient_delete:
+    path: /entretient/{id}/delete
+    controller: 'App\Controller\EntretientController::delete'
+
+# Routes pour RecrutementController
+app_recrutement_index:
+    path: /recrutement
+    controller: 'App\Controller\RecrutementController::index'
+
+app_recrutement_new:
+    path: /recrutement/new
+    controller: 'App\Controller\RecrutementController::new'
+
+app_recrutement_show:
+    path: /recrutement/{id}
+    controller: 'App\Controller\RecrutementController::show'
+
+app_recrutement_edit:
+    path: /recrutement/{id}/edit
+    controller: 'App\Controller\RecrutementController::edit'
+
+app_recrutement_delete:
+    path: /recrutement/{id}/delete
+    controller: 'App\Controller\RecrutementController::delete'
+
+# Routes pour RecrutementfController
+app_recrutementf_index:
+    path: /recrutementf
+    controller: 'App\Controller\RecrutementfController::index'
+
+app_recrutementf_new:
+    path: /recrutementf/new
+    controller: 'App\Controller\RecrutementfController::new'
+
+app_recrutementf_show:
+    path: /recrutementf/{id}
+    controller: 'App\Controller\RecrutementfController::show'
+
+app_recrutementf_edit:
+    path: /recrutementf/{id}/edit
+    controller: 'App\Controller\RecrutementfController::edit'
+
+app_recrutementf_delete:
+    path: /recrutementf/{id}/delete
+    controller: 'App\Controller\RecrutementfController::delete'

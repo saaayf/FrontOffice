@@ -1,0 +1,190 @@
+{% extends 'Front/Frontbase.html.twig' %}
+{% block title %}SKILLSEEKR | Browse Offers
+{% endblock %}
+{% block body %}
+	<div class="container">
+		<div class="filter-container bg-light p-3 rounded shadow">
+			<h5 class="mb-3">Filter by:</h5>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="radio" name="filterType" id="filterAll" value="all" checked>
+				<label class="form-check-label" for="filterAll">All</label>
+			</div>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="radio" name="filterType" id="filterInternship" value="internship">
+				<label class="form-check-label" for="filterInternship">Internships</label>
+			</div>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="radio" name="filterType" id="filterMission" value="mission">
+				<label class="form-check-label" for="filterMission">Missions</label>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-xxl py-5">
+		<div class="container">
+			<div class="text-center wow fadeInUp" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
+				<h6 class="section-title bg-white text-center text-primary px-3">Latest offers</h6>
+				<h1 class="mb-5">Keep updated</h1>
+			</div>
+			<div class="row g-4">
+				{% for offer in offers %}
+					{% if offer.status == 'Published' %}
+						<div class="col-lg-4 col-md-6 wow fadeInUp offer-item hidden" data-type="{{ offer.type }}" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInUp;">
+							<div class="card rounded-3">
+								<div class="card-header rounded-3 p-0 text-center">
+									<img class="card-img-top rounded-3" src="https://demos.creative-tim.com/argon-dashboard/assets/img/carousel-1.jpg" alt="Card image cap">
+								</div>
+								<div class="card-body pt-0 p-3 text-center">
+									<h6 class="text-center mb-0 text-capitalize py-3">{{offer.title}}</h6>
+									<span class="text-xs">{{offer.description|length > 70 ? offer.description|slice(0, 70) ~ '...' : offer.description}}</span>
+									<hr class="horizontal dark my-3">
+									<h5 class="mb-0">{{offer.createdAt|date('d-m-Y')}}</h5>
+									<button type="button" class="btn btn-dark mt-3 w-100" data-bs-toggle="modal" data-bs-target="#offer{{offer.id}}">
+										Read more
+									</button>
+									<!-- Modal -->
+									<div class="modal fade" id="offer{{offer.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="exampleModalLabel">Apply for offer -
+														{{offer.title}}</h5>
+													<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+												</div>
+												<div class="modal-body">
+													<ul class="list-unstyled text-start">
+														<li>
+															<strong>Title:
+															</strong>
+															{{offer.title}}</li>
+														<li>
+															<strong>Type:
+															</strong>
+															{{offer.type}}</li>
+														<li>
+															<strong>Motive:
+															</strong>
+															{{offer.motive}}</li>
+														<li>
+															<strong>Location:
+															</strong>
+															{{offer.location}}</li>
+														<li>
+															<strong>Author:
+															</strong>
+															{{offer.author}}</li>
+														<li>
+															<strong>Description:
+															</strong>
+															{{offer.description}}</li>
+														<li><hr/></li>
+														<li>
+															<div class="d-flex justify-content-center align-items-center">
+																{% for skill in offer.skills %}
+																	<button type="button" class="btn btn-outline-primary rounded-3 me-3">{{skill.skill}}</button>
+																{% endfor %}
+															</div>
+														</li>
+													</ul>
+													{% if offer.fileName %}
+														<div class="text-center mt-3">
+															<a href="{{ path('app_download_file', { 'id': offer.id, 'filename': offer.fileName }) }}" class="btn btn-success rounded-pill py-2 px-4" download>
+																<i class="fas fa-download me-1"></i>
+																Download Attachment
+															</a>
+														</div>
+													{% endif %}
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+													<button type="button" class="btn btn-primary" id="applyButton">Apply now</button>
+												</div>
+											</div>
+										</div>
+									</div>
+
+
+								</div>
+							</div>
+						</div>
+						<!-- Second Modal -->
+						<div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
+							<div
+								class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+								<!-- Center the modal and allow scrolling if necessary -->
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="applyModalLabel">Apply for Offer</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div
+										class="modal-body">
+										<!-- Form fields for author, subject, and demand -->
+										<form id="applyForm">
+											<div class="mb-3">
+												<label for="author" class="form-label">Author</label>
+												<input type="text" class="form-control" id="author" name="author" required>
+											</div>
+											<div class="mb-3">
+												<label for="subject" class="form-label">Subject</label>
+												<input type="text" class="form-control" id="subject" name="subject" required>
+											</div>
+											<div class="mb-3">
+												<label for="demand" class="form-label">Demand</label>
+												<!-- Increase rows attribute to make textarea bigger -->
+												<textarea class="form-control" id="demand" name="demand" rows="4" required></textarea>
+												<!-- Reduced the number of rows -->
+											</div>
+										</form>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-primary" id="sendButton">Send</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+					{% endif %}
+				{% endfor %}
+
+
+			</div>
+		</div>
+	</div>
+	<script>
+		document.getElementById('filterInternship').addEventListener('click', function () {
+const missionOffers = document.querySelectorAll('.offer-item[data-type="Mission"]');
+missionOffers.forEach(function (offer) {
+offer.classList.add('d-none');
+});
+const internshipOffers = document.querySelectorAll('.offer-item[data-type="Internship"]');
+internshipOffers.forEach(function (offer) {
+offer.classList.remove('d-none');
+});
+});
+
+document.getElementById('filterMission').addEventListener('click', function () {
+const internshipOffers = document.querySelectorAll('.offer-item[data-type="Internship"]');
+internshipOffers.forEach(function (offer) {
+offer.classList.add('d-none');
+});
+const missionOffers = document.querySelectorAll('.offer-item[data-type="Mission"]');
+missionOffers.forEach(function (offer) {
+offer.classList.remove('d-none');
+});
+});
+
+document.getElementById('filterAll').addEventListener('click', function () {
+const allOffers = document.querySelectorAll('.offer-item');
+allOffers.forEach(function (offer) {
+offer.classList.remove('d-none');
+});
+});
+	</script>
+	<script>
+		document.getElementById('applyButton').addEventListener('click', function () {
+$('#applyModal').modal('show');
+});
+	</script>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'Back/base.html.twig' %}
+
+{% block title %}
+    New Offer
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h1 class="display-3 font-weight-bold text-white text-center">New Offer</h1>
+
+            {{ include('Back/offer/_form.html.twig') }}
+        </div>
+    </div>
+    <div class="row pt-4">
+    <div class="col-md-12"><a href="{{ path('app_offer_index') }}" class="btn btn-success"><i class="fa fa-angle-left" aria-hidden="true">&nbsp;</i>
+back to list</a></div>
+    </div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'Backbase.html.twig' %}
+
+{% block title %}Entretient{% endblock %}
+
+{% block body %}
+    <h1>Entretient</h1>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entretient.id }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ entretient.date ? entretient.date|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ entretient.type }}</td>
+            </tr>
+            <tr>
+                <th>Resultat</th>
+                <td>{{ entretient.resultat }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_entretient_index') }}" class="btn btn-info">back to list</a> <!-- Ajoutez la classe btn-info -->
+    <a href="{{ path('app_entretient_edit', {'id': entretient.id}) }}" class="btn btn-primary">edit</a> <!-- Ajoutez la classe btn-primary -->
+
+    {{ include('entretient/_delete_form.html.twig') }}
+{% endblock %}

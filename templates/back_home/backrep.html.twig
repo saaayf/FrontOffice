@@ -1,0 +1,59 @@
+{% extends 'Backbase.html.twig' %}
+
+{% block title %}
+    Reponse
+{% endblock %}
+
+{% block body %}
+{% set successFlash = app.session.flashbag.get('success') %}
+{% if successFlash is not empty %}
+    <div id="successAlert" class="alert alert-success mt-4" style="display: none; position: fixed; top: 0; left: 50%; transform: translateX(-50%); z-index: 9999;">
+        <span class="iconify" data-icon="carbon:checkmark-outline" data-inline="false"></span>
+        {% for message in successFlash %}
+            {{ message|raw }}<br>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div class="row align-items-center my-5">
+    <div class="col-md-7">
+        <h1 class="display-3 font-weight-bold text-white">Reponse list</h1>
+    </div>
+</div>
+    <div class="container">
+        <table class="table table-hover">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th scope="col" class="text-center">#</th>
+                    <th scope="col" class="text-center">titre</th>
+                    <th scope="col" class="text-center">Subject</th>
+                    <th scope="col" class="text-center">Message</th>
+                    <th scope="col" class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reponse in list %}
+                    <tr>
+                        <td class="text-center">{{ reponse.id }}</td>
+                        <td class="text-center">{{ reponse.reclamation.title }}</td>
+                        <td class="text-center">{{ reponse.subject }}</td>
+                        <td class="text-center">{{ reponse.message }}</td>
+                        <td class="text-center">
+                            <div class="container-md">
+                                <a class="btn btn-danger" href="{{ path('delete_back', {'id': reponse.id}) }}">Delete</a>
+                            </div>
+                            <div class="container-md">
+                                <a class="btn btn-primary" href="{{ path('generate_pdf') }}" download="test.pdf">Télécharger le PDF</a>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center">No records found</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

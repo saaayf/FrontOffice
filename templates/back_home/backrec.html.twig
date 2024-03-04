@@ -1,0 +1,97 @@
+{% extends 'Back/base.html.twig' %}
+
+{% block title %}
+    Reclamation
+{% endblock %}
+
+{% block styles %}
+    <style>
+        .pagination-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .pagination-circle {
+            display: inline-block;
+            margin: 0 5px;
+            width: 40px; /* Largeur du cercle */
+            height: 40px; /* Hauteur du cercle */
+            line-height: 40px; /* Centrage vertical */
+            border-radius: 50%; /* Cercle */
+            border: 2px solid #007bff; /* Bordure */
+            background-color: #fff; /* Fond */
+            color: #007bff; /* Couleur du texte */
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px; /* Taille du texte */
+        }
+
+        .pagination-circle:hover {
+            background-color: #007bff; /* Fond au survol */
+            color: #fff; /* Couleur du texte au survol */
+        }
+
+        .pagination-current {
+            background-color: #007bff; /* Fond de la page actuelle */
+            color: #fff; /* Couleur du texte de la page actuelle */
+        }
+    </style>
+{% endblock %}
+
+
+{% block body %}
+    {% set successFlash = app.session.flashbag.get('success') %}
+    {% if successFlash is not empty %}
+        <div id="successAlert" class="alert alert-success mt-4" style="display: none; position: fixed; top: 0; left: 50%; transform: translateX(-50%); z-index: 9999;">
+            <span class="iconify" data-icon="carbon:checkmark-outline" data-inline="false"></span>
+            {% for message in successFlash %}
+                {{ message|raw }}<br>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="row align-items-center my-5">
+        <div class="col-md-7">
+            <h1 class="display-3 font-weight-bold text-white">Reclamation list</h1>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th scope="col" class="text-center">#</th>
+                    <th scope="col" class="text-center">Title</th>
+                    <th scope="col" class="text-center">Content</th>
+                    <th scope="col" class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in list %}
+                    <tr>
+                        <td class="text-center">{{ data.idrec }}</td>
+                        <td class="text-center">{{ data.title }}</td>
+                        <td class="text-center">{{ data.content }}</td>
+                        <td class="text-center">
+                            <div class="container-md">
+                                <a class="btn btn-danger" href="{{ path('backdelete', {'idrec': data.idrec}) }}">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination-container">
+        {% for page in 1..pager.getNbPages() %}
+            {% if page == pager.getCurrentPage() %}
+                <a href="{{ path('app_backrec', {'page': page}) }}" class="pagination-circle pagination-current">{{ page }}</a>
+            {% else %}
+                <a href="{{ path('app_backrec', {'page': page}) }}" class="pagination-circle">{{ page }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+    
+    
+{% endblock %}

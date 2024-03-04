@@ -1,0 +1,28 @@
+{{ form_start(form, {'attr': {'novalidate': 'novalidate','class': 'my-4', 'style': 'background-color: rgba(173, 216, 230, 0.8); padding: 20px; border-radius: 15px; '}}) }}
+{{ form_row(form.title , {'attr': {'class': 'form-control'}}) }}
+{{ form_row(form.description , {'attr': {'class': 'form-control'}}) }}
+{{ form_row(form.author , {'attr': {'class': 'form-control'}}) }}
+{{ form_row(form.CreatedAt , {'attr': {'class': 'form-control'}}) }}
+{{ form_row(form.motive , {'attr': {'class': 'form-control'}}) }}
+{{ form_row(form.type , {'attr': {'class': 'form-control'}}) }}
+{{ form_row(form.location , {'attr': {'class': 'form-control'}}) }}
+{{ form_row(form.skills , {'attr': {'class': 'form-control'}}) }}
+{{ form_row(form.file , {'attr': {'class': 'form-control'}}) }}
+{{ form_row(form.status , {'attr': {'class': 'form-control'}}) }}
+
+<div class="form-group text-center mt-4">
+	<button type="submit" class="btn btn-md btn-primary w-100">
+		Submit Offer
+	</button>
+</div>
+<script>
+	// Check if the success flash message is present in the DOM
+if (document.querySelector('#successAlert')) { // If present, show the success alert
+document.querySelector('#successAlert').style.display = 'block';
+// Fade out the alert after 5 seconds
+setTimeout(function () {
+document.querySelector('#successAlert').style.display = 'none';
+}, 5000);
+}
+</script>
+{{ form_end(form) }}

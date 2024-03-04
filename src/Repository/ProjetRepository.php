@@ -47,14 +47,47 @@ class ProjetRepository extends ServiceEntityRepository
 //    }
 
 
- public function findByExampleField($value): array
+ public function findByExampleField($value , int $userId): array
    {
-        return $this->createQueryBuilder('p')
-                   ->where('p.titre LIKE :searchQuery')
-                   ->orWhere('p.proprietaire LIKE :searchQuery')
-                   ->orWhere('p.budget LIKE :searchQuery')
-                   ->setParameter('searchQuery', '%' . $value . '%')
-                   ->getQuery()
-                   ->getResult();
+       return $this->createQueryBuilder('p')
+               ->leftJoin('p.user', 'u')
+               ->where('p.titre LIKE :searchQuery')
+               ->orWhere('p.proprietaire LIKE :searchQuery')
+               ->orWhere('p.budget LIKE :searchQuery')
+               ->andWhere('u.id = :userId')
+               ->setParameter('searchQuery', '%' . $value . '%')
+               ->setParameter('userId', $userId)
+               ->getQuery()
+               ->getResult();
     }
+     public function findByExampleFieldAll($value , int $userId): array
+       {
+           return $this->createQueryBuilder('p')
+                          ->leftJoin('p.user', 'u')
+                          ->where('p.titre LIKE :searchQuery')
+                          ->orWhere('p.proprietaire LIKE :searchQuery')
+                          ->orWhere('p.budget LIKE :searchQuery')
+                          ->andWhere('u.id != :userId')
+                          ->setParameter('searchQuery', '%' . $value . '%')
+                          ->setParameter('userId', $userId)
+                          ->getQuery()
+                          ->getResult();
+        }
+
+    public function findProjectsByUserId(int $userId): array
+       {
+           return $this->createQueryBuilder('p')
+               ->andWhere('p.user = :userId')
+               ->setParameter('userId', $userId)
+               ->getQuery()
+               ->getResult();
+       }
+       public function findProjectsNotByUserId(int $userId): array
+              {
+                  return $this->createQueryBuilder('p')
+                      ->andWhere('p.user != :userId')
+                      ->setParameter('userId', $userId)
+                      ->getQuery()
+                      ->getResult();
+              }
 }

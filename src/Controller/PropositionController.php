@@ -12,10 +12,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twilio\Rest\Client;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Security\Core\Security;
 
 #[Route('/proposition')]
 class PropositionController extends AbstractController
 {
+private $logger;
+    private $security;
+
+    public function __construct(LoggerInterface $logger ,Security $security)
+    {
+        $this->logger = $logger;
+        $this->security = $security;
+    }
+
     #[Route('/findbyprojet/{id_projet}', name: 'app_proposition_index', methods: ['GET'])]
     public function index($id_projet, PropositionRepository $propositionRepository): Response
     {
@@ -33,9 +44,23 @@ class PropositionController extends AbstractController
             ]);
         }
 
+         #[Route('/findbyprojetMy/{id_projet}', name: 'app_proposition_index_My', methods: ['GET'])]
+            public function indexMine($id_projet, PropositionRepository $propositionRepository): Response
+            {
+                return $this->render('proposition/Myindex.html.twig', [
+                    'propositions' => $propositionRepository->findbyprojet($id_projet),
+                    "id_projet" => $id_projet
+                ]);
+            }
+
+
     #[Route('/new/{id_projet}', name: 'app_proposition_new', methods: ['GET', 'POST'])]
     public function new($id_projet,Request $request, EntityManagerInterface $entityManager): Response
     {
+
+            $iduser = $this->security->getUser()->getId();
+             $this->logger->info("current user id = " . $iduser);
+             $user = $this->security->getUser();
         $proposition = new Proposition();
         $form = $this->createForm(PropositionType::class, $proposition);
         $form->handleRequest($request);
@@ -43,18 +68,20 @@ class PropositionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $proposition->setIdProjet($entityManager->getRepository(Projet::class)->find($id_projet));
             $entityManager->persist($proposition);
+             $proposition->setUser($user);
             $entityManager->flush();
-             $sid    = "AC31bb73eb632d06babca5d76d125861d9";
-                    $token  = "abcb7ede141d78bc0ec4f04282ca8d5b";
+
+             $sid = "AC31bb73eb632d06babca5d76d125861d9";
+                    $token  = "c898343992c62300f56ab4051cc4d7c4";
                     $twilio = new Client($sid, $token);
 
-                    $message = $twilio->messages
+                  /*  $message = $twilio->messages
                       ->create("+21696614020", // to
                         array(
                           "from" => "+14845145353",
                           "body" => "Une nouvelle postulation a été ajouté à votre projet !"
                         )
-                      );
+                      );*/
 
             return $this->redirectToRoute('app_proposition_index', ['id_projet' => $id_projet], Response::HTTP_SEE_OTHER);
         }

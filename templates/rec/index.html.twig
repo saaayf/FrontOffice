@@ -1,0 +1,87 @@
+{% extends "Frontbase.html.twig" %}
+
+{% block title %}Reclamations{% endblock %}
+
+{% block body %}
+    <!-- Courses Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row justify-content-start">
+                <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                    <h6 class="section-title bg-white text-center text-primary px-3">Reclamations</h6>
+                    <h1 class="mb-5">Reclamation</h1>
+                    <div class="container-md">
+                        <a class="btn btn-primary" href="{{ path('create') }}">Create new</a>
+                    </div>
+                </div>
+                <div class="row g-4 justify-content-center">
+                    <!-- Search Input -->
+                    <div class="card-title">
+                        <input type="text" id="searchInput" placeholder="Type to search..." class="form-control mb-3">
+                    </div>
+                    <div id="claimsTable" class="row row-cols-1 row-cols-md-3 g-4">
+                        {% for data in list %}
+                            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                                <div class="course-item bg-light">
+                                    <div class="text-center p-4 pb-0">
+                                        <i class="fa fa-3x fa-globe text-primary mb-4"></i>
+                                        <h2 class="mb-4">{{ data.title }}</h2>
+                                        <h3 class="mb-0">{{ data.content }}</h3>
+                                        {% if data.reponses is not empty %}
+                                            <h4>Réponses :</h4>
+                                            <ul>
+                                                {% for reponse in data.reponses %}
+                                                <div class="reponse-box" style="max-height: 150px; overflow-y: auto;">
+                                                    <li>sujet : {{ reponse.subject }} -  message:{{ reponse.message }}</li>
+                                                </div>
+                                                {% endfor %}
+                                               
+                                              
+                                            </ul>
+                                        {% else %}
+                                            <p>Aucune réponse pour cette réclamation.</p>
+                                        {% endif %}
+                                        <a class="btn btn-primary" href="{{ path('update',{'idrec':data.idrec}) }}">Update</a>
+                                        <a class="btn btn-outline-primary" href="{{ path('delete',{'idrec':data.idrec}) }}">Delete</a>
+                                        <a class="btn btn-outline-primary" href="{{ path('reponse_create',{'id':data.idrec}) }}">Repondre</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div>
+                                <p>no reclamation found</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Courses End -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keyup', function() {
+                const searchTerm = this.value;
+                console.log(searchTerm);
+    
+                // Make an AJAX request to the server
+                fetch('{{ path('Claims_show') }}?search=' + encodeURIComponent(searchTerm), {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest' // This header is required by Symfony to recognize the request as AJAX
+                    }
+                })
+                .then(response => response.text())
+                .then(html => {
+                    // Update the table's tbody with the response
+                    document.getElementById('claimsTable').innerHTML = html;
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

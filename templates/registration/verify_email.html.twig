@@ -1,0 +1,17 @@
+{% block title %}Verify Email{% endblock %}
+
+{% block body %}
+    <h1>Verify Your Email</h1>
+
+    <p>Please enter the verification code sent to your email address:</p>
+
+    {{ form_start(verificationForm) }}
+        {{ form_row(verificationForm.code, {
+            'label': 'Verification Code',
+            'attr': {
+                'placeholder': 'Enter verification code',
+            },
+        }) }}
+        <button type="submit">Verify</button>
+    {{ form_end(verificationForm) }}
+{% endblock %}

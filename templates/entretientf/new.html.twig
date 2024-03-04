@@ -1,0 +1,11 @@
+{% extends 'Frontbase.html.twig' %}
+
+{% block title %}New Entretient{% endblock %}
+
+{% block body %}
+    <h1>Create new Entretient</h1>
+
+    {{ include('entretientf/_form.html.twig') }}
+
+    <a href="{{ path('app_entretientf_index') }}">back to list</a>
+{% endblock %}

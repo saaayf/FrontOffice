@@ -1,0 +1,126 @@
+{% extends 'Front/Frontbase.html.twig' %}
+
+{% block title %}
+    SKILLSEEKR | Create Offers
+{% endblock %}
+
+{% block body %}
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
+                <h6 class="section-title bg-white text-center text-primary px-3">Job Offers Space</h6>
+                <h1 class="mb-5">Manage Your Offers</h1>
+            </div>
+            <div class="col-md-5 text-end"></div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="bg-dark text-white">
+                    <tr>
+                        <th scope="col" class="text-center">Id</th>
+                        <th scope="col" class="text-center">Title</th>
+                        <th scope="col" class="text-center">Description</th>
+                        <th scope="col" class="text-center">Author</th>
+                        <th scope="col" class="text-center">Date</th>
+                        <th scope="col" class="text-center">Type</th>
+                        <th scope="col" class="text-center">Motive</th>
+                        <th scope="col" class="text-center">Location</th>
+                        <th scope="col" class="text-center">Skills</th>
+                        <th scope="col" class="text-center">File</th>
+                        <th scope="col" class="text-center">Status</th>
+                        <th scope="col" class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for offer in offers %}
+                        <tr>
+                            <td class="text-center">{{ offer.id }}</td>
+                            <td class="text-center">{{ offer.title }}</td>
+                            <td class="text-center">{{ offer.description|length > 30 ? offer.description|slice(0, 30) ~ '...' : offer.description }}</td>
+                            <td class="text-center">{{ offer.author }}</td>
+                            <td class="text-center">{{ offer.createdAt ? offer.createdAt|date('Y-m-d') : '' }}</td>
+                            <td class="text-center">{{ offer.type }}</td>
+                            <td class="text-center">{{ offer.motive }}</td>
+                            <td class="text-center">{{ offer.location }}</td>
+                            <td class="text-center">
+                                {% for skill in offer.skills %}
+                                    {{ skill }}
+                                    {% if not loop.last %},
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td class="text-center">
+                                {% if offer.fileName %}
+                                    {{ offer.fileName }}
+                                {% else %}
+                                    No file
+                                {% endif %}
+                            </td>
+                            <td>{{ offer.status }}</td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-around align-items-center">
+                                    <a href="{{ path('front_offer_edit', {'id': offer.id}) }}" class="btn btn-xs btn-primary" title="Edit offer">
+                                        <i class="fa fa-edit" aria-hidden="true"></i>
+                                    </a>
+                                    <a href="{{ path('front_offer_delete', {'id': offer.id}) }}" class="btn btn-xs btn-danger" title="Delete offer">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </a>
+                                    {% if offer.fileName %}
+                                        <a href="{{ path('app_download_file', {'id': offer.id}) }}" class="btn btn-xs btn-pink" title="Download file">
+                                            <i class="fa fa-download" aria-hidden="true"></i>
+                                        </a>
+                                    {% else %}
+                                        &nbsp;
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="11" class="text-center">No records found</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% if offers|length > 0 %}
+            <!-- Pagination -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    {% set total_pages = (offers|length / 5)|round(0, 'ceil') %}
+                    {% set current_page = app.request.query.get('page') ?? 1 %}
+
+                    {% if current_page > 1 %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ path('app_offer_front', {'page': current_page - 1}) }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% for page in 1..total_pages %}
+                        {% set active = page == current_page ? 'active' : '' %}
+                        <li class="page-item {{ active }}">
+                            <a class="page-link" href="{{ path('app_offer_front', {'page': page}) }}" style="{{ active == 'active' ? 'color: white;' }}">
+                                {{ page }}
+                            </a>
+                        </li>
+                    {% endfor %}
+
+                    {% if current_page < total_pages %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ path('app_offer_front', {'page': current_page + 1}) }}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+    </div>
+
+    <a href="{{ path('front_offer_new') }}" class="btn btn-lg btn-info" style="color: white; text-align: center; width: 200px; display: block; margin: 0 auto;">
+        <i class="fa fa-plus" aria-hidden="true">&nbsp;</i>
+        Add Offer
+    </a>
+{% endblock %}

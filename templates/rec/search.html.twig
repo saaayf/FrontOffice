@@ -1,0 +1,60 @@
+
+
+
+{% block title %}  {% endblock %}
+
+
+{% block body %}
+
+
+<!-- Courses Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row justify-content-start">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="section-title bg-white text-center text-primary px-3">Reclamations</h6>
+                
+              
+            </div>
+            <div class="row g-4 justify-content-center" class="row row-cols-1 row-cols-md-3 g-4>
+
+          
+            
+             <!-- ... (existing content) ... -->
+                {% for data in list %}
+                 
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="course-item bg-light">
+
+                            <div class="text-center p-4 pb-0">
+                                <i class="fa fa-3x fa-globe text-primary mb-4"></i>
+                                <h2 class="mb-4">{{ data.title }}</h2>
+                                <h3 class="mb-0">{{ data.content }}</h3>
+                                
+                              
+
+                               <a class="btn btn-primary" href="{{ path('update',{'idrec':data.idrec}) }}">Update</a>
+                               <a class="btn btn-outline-primary" href="{{ path('delete',{'idrec':data.idrec}) }}">Delete</a>
+                               <a class="btn btn-outline-primary" href="{{ path('reponse_create',{'id':data.idrec}) }}">Repondre</a>
+
+                               
+                            </div>
+
+                        </div>
+                    </div>
+                {% else %}
+                    <tr>
+                        <td colspan="8">no reclamation found</td>
+                    </tr>
+                {% endfor %}
+
+
+
+            </div>
+        </div>
+
+    </div>
+    <!-- Courses End -->
+    
+
+    {% endblock %}

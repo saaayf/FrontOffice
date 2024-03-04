@@ -1,0 +1,4 @@
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    {{ form_widget(form , {'label_attr': {'class': 'text-primary fw-bold'}, 'attr': {'class': 'form-control rounded-3', 'placeholder': 'Enter title'}}) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

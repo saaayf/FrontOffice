@@ -1,0 +1,29 @@
+{% extends 'Front/Frontbase.html.twig' %}
+
+{% block title %}
+    SKILLSEEKR | Offer
+{% endblock %}
+
+{% block body %}
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
+                <h6 class="section-title bg-white text-center text-primary px-3">Offer Space</h6>
+                <h1 class="mb-5">Create your SS Offer</h1>
+
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        {{ include('Front/offer/_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row pt-4">
+            <div class="col-md-12">
+                <a href="{{ path('app_offer_front') }}" class="btn btn-success">
+                    <i class="fa fa-angle-left" aria-hidden="true">&nbsp;</i>
+                    Back to list
+                </a>
+            </div>
+        </div>
+    {% endblock %}

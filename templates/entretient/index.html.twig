@@ -1,0 +1,50 @@
+{% extends 'Backbase.html.twig' %}
+
+{% block title %}Entretient index{% endblock %}
+
+{% block body %}
+    <h1>Entretient index</h1>
+
+    <table class="table table-hover"> <!-- Ajoutez la classe table-hover -->
+        <br>
+        <br>
+        <br>
+        <br>
+        <thead class="bg-dark text-white"> <!-- Ajoutez la classe bg-dark et text-white -->
+            <tr>
+                <th scope="col" class="text-center">Id</th>
+                <th scope="col" class="text-center">Date</th>
+                <th scope="col" class="text-center">Type</th>
+                <th scope="col" class="text-center">Resultat</th>
+                <th scope="col" class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entretient in entretients %}
+                <tr>
+                    <td class="text-center">{{ entretient.id }}</td>
+                    <td class="text-center">{{ entretient.date ? entretient.date|date('Y-m-d') : '' }}</td>
+                    <td class="text-center">{{ entretient.type }}</td>
+                    <td class="text-center">{{ entretient.resultat }}</td>
+                    <td class="text-center">
+                        <a href="{{ path('app_entretient_show', {'id': entretient.id}) }}" class="btn btn-xs btn-primary" title="Show">
+                            <i class="fa fa-eye" aria-hidden="true"></i>
+                        </a>
+                        <a href="{{ path('app_entretient_edit', {'id': entretient.id}) }}" class="btn btn-xs btn-warning" title="Edit">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">No records found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_entretient_new') }}" class="btn btn-lg btn-info"> <!-- Ajoutez la classe btn-lg et btn-info -->
+        <i class="fa fa-plus" aria-hidden="true">&nbsp;</i>
+        Create new
+    </a>
+{% endblock %}

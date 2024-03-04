@@ -1,0 +1,141 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+{{ form_start(form) }}
+{{ form_row(form.title, {'label_attr': {'class': 'text-primary fw-bold'}, 'attr': {'class': 'form-control rounded-3', 'placeholder': 'Enter title'}}) }}
+{{ form_row(form.description, {'label_attr': {'class': 'text-primary fw-bold'}, 'attr': {'class': 'form-control rounded-3', 'placeholder': 'Enter description'}}) }}
+{{ form_row(form.author, {'label_attr': {'class': 'text-primary fw-bold'}, 'attr': {'class': 'form-control rounded-3', 'placeholder': 'Enter author email'}}) }}
+{{ form_row(form.CreatedAt, {'label_attr': {'class': 'text-primary fw-bold'}, 'attr': {'class': 'form-control rounded-3'}}) }}
+{{ form_row(form.motive, {'label_attr': {'class': 'text-primary fw-bold'}, 'attr': {'class': 'form-select rounded-3'}, 'placeholder': 'Select a motive'}) }}
+{{ form_row(form.type, {'label_attr': {'class': 'text-primary fw-bold'}, 'attr': {'class': 'form-select rounded-3'}, 'placeholder': 'Select your offer type'}) }}
+{{ form_row(form.location, {'label_attr': {'class': 'text-primary fw-bold'}, 'attr': {'class': 'form-select rounded-3'}, 'placeholder': 'Select offer location'}) }}
+{{ form_row(form.file, {'label_attr': {'class': 'text-primary fw-bold'}, 'attr': {'class': 'form-control rounded-3'}}) }}
+
+{# Custom rendering for skills field with dynamic input #}
+<div class="form-group">
+	<label class="text-primary fw-bold">Skills</label>
+	<input type="text" class="form-control" id="skills-input" placeholder="Search for skills">
+	<div id="selected-skills"></div>
+	<div id="skills-suggestions" style="display: none;"></div>
+</div>
+{# Custom rendering for status field #}
+<div class="form-group">
+	<label class="text-primary fw-bold">Status</label>
+	<div class="d-flex justify-content-between">
+		{% for child in form.status %}
+			<div class="form-check mx-2">
+				{{ form_widget(child, {'attr': {'class': 'form-check-input'}}) }}
+				{{ form_label(child, child.vars.value, {'label_attr': {'class': 'form-check-label text-dark font-weight-normal'}}) }}
+			</div>
+		{% endfor %}
+	</div>
+</div>
+<input
+type="hidden" id="selected-skills-input" name="selected_skills[]" value="">
+{# Submit button #}
+<button type="submit" class="btn btn-primary btn-lg btn-rounded mt-3">Submit</button>
+
+{{ form_end(form) }}{# Import Select2 JavaScript and initialize it #}
+
+{# Include necessary JavaScript for autocomplete functionality #}<script src="https://code.jquery.com/jquery-3.6.0.min.js"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+	$(document).ready(function () { // Array to store selected skills
+var selectedSkills = [];
+
+$('#skills-input').on('input', function () {
+var query = $(this).val().trim().toLowerCase();
+
+// Fetch skills from the server
+$.ajax({
+url: '{{ path('search_skills') }}',
+method: 'GET',
+success: function (response) {
+var skills = response; // Array of skills from the server
+
+var suggestions = skills.filter(function (skill) {
+return skill.toLowerCase().includes(query);
+});
+
+if (suggestions.length > 0) { // Show suggestion box if there are matching skills
+$('#skills-suggestions').empty(); // Clear previous suggestions
+suggestions.forEach(function (skill) {
+$('#skills-suggestions').append('<div class="skill-suggestion">' + skill + '</div>');
+});
+$('#skills-suggestions').show(); // Show suggestion box
+} else { // Hide suggestion box if no matching skills
+$('#skills-suggestions').hide();
+}
+}
+});
+});
+
+// Allow clicking on a skill suggestion to add it
+$(document).on('click', '.skill-suggestion', function () {
+var selectedSkill = $(this).text();
+addSkill(selectedSkill);
+});
+
+// Function to add a skill
+function addSkill(skill) { // Add the skill to the selectedSkills array
+selectedSkills.push(skill);
+
+// Update the hidden input field with selected skills
+$('#selected-skills-input').val(selectedSkills.join(','));
+
+// Render selected skills
+renderSelectedSkills();
+
+// Clear the input field
+$('#skills-input').val('');
+
+// Hide suggestion box
+$('#skills-suggestions').hide();
+}
+
+// Function to render selected skills
+function renderSelectedSkills() {
+$('#selected-skills').empty(); // Clear previous selected skills
+
+selectedSkills.forEach(function (skill) {
+$('#selected-skills').append('<div class="selected-skill">' + skill + '<span class="remove-skill">&times;</span></div>');
+});
+}
+
+// Allow removing a selected skill
+$(document).on('click', '.remove-skill', function () {
+var skillToRemove = $(this).prev().text().trim();
+selectedSkills = selectedSkills.filter(function (skill) {
+return skill !== skillToRemove;
+});
+$('#selected-skills-input').val(selectedSkills.join(','));
+renderSelectedSkills();
+});
+
+// Hide suggestions if clicking outside the input or suggestions box
+$(document).on('click', function (event) {
+if (!$(event.target).closest('#skills-input, #skills-suggestions').length) {
+$('#skills-suggestions').hide();
+}
+});
+});
+</script>
+<style>
+	.selected-skill {
+		display: inline-block;
+		background-color: #f0f0f0;
+		color: #333;
+		border: 1px solid #ccc;
+		padding: 5px 10px;
+		border-radius: 15px;
+		margin-right: 5px;
+	}
+
+	.remove-skill {
+		cursor: pointer;
+		padding-left: 5px;
+	}
+
+	.remove-skill:hover {
+		color: red;
+	}
+</style>

@@ -42,6 +42,10 @@ class Projet
     #[ORM\OneToMany(targetEntity: Proposition::class, mappedBy: 'id_projet', orphanRemoval: true)]
     private Collection $propList;
 
+    #[ORM\ManyToOne(targetEntity: User::class)]
+        #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
+        private $user;
+
     public function __construct()
     {
         $this->propList = new ArrayCollection();
@@ -153,4 +157,15 @@ class Projet
 
         return $this;
     }
+
+     public function getUser(): ?User
+        {
+            return $this->user;
+        }
+
+        public function setUser(?User $user): self
+        {
+            $this->user = $user;
+            return $this;
+        }
 }
