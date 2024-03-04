@@ -2,10 +2,7 @@
 
 {% block title %} Projet index {% endblock %}
 
-
 {% block body %}
-
-
 <!-- Courses Start -->
 <div class="container-xxl py-5">
     <div class="container">
@@ -17,7 +14,11 @@
                     <a class="btn btn-primary" href="{{ path('app_projet_new') }}">Create new</a>
                 </div>
             </div>
-            <div class="row g-4 justify-content-center">
+            <div class="text-center">
+                <input class="form-control border-end-0 border rounded-pill" type="text" placeholder="search" id="search">
+            </div>
+
+            <div class="row g-4 justify-content-center" id="search-results">
                 {% for projet in projets %}
                     <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                         <div class="course-item bg-light">
@@ -51,10 +52,42 @@
                         <td colspan="8">no projets found</td>
                     </tr>
                 {% endfor %}
-
             </div>
-        </div>
 
+
+            <div id="pagination" class="d-flex justify-content-center mt-4">
+                {{ knp_pagination_render(projets, '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig') }}
+            </div>
+
+        </div>
     </div>
+</div>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        var delayTimer; // Variable to store the timer ID
+
+        function search() {
+            // Clear the previous timer
+            clearTimeout(delayTimer);
+            // Set a new timer to execute the search after a delay (e.g., 300 milliseconds)
+            delayTimer = setTimeout(function() {
+                var query = document.getElementById('search').value;
+                var url = '{{ path('app_projet_index_front') }}?q=' + query;
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    success: function(response) {
+                        $('#search-results').html(response.content); // Update search results HTML
+                        $('#pagination').html(response.pagination); // Update pagination HTML
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }, 300); // Set the delay time here (300 milliseconds in this example)
+        }
+        document.getElementById('search').addEventListener('input', search);
+    </script>
     <!-- Courses End -->
     {% endblock %}
+

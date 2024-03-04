@@ -45,4 +45,16 @@ class ProjetRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+
+ public function findByExampleField($value): array
+   {
+        return $this->createQueryBuilder('p')
+                   ->where('p.titre LIKE :searchQuery')
+                   ->orWhere('p.proprietaire LIKE :searchQuery')
+                   ->orWhere('p.budget LIKE :searchQuery')
+                   ->setParameter('searchQuery', '%' . $value . '%')
+                   ->getQuery()
+                   ->getResult();
+    }
 }

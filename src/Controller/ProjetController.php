@@ -10,10 +10,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Psr\Log\LoggerInterface;
 
 #[Route('/projet')]
 class ProjetController extends AbstractController
 {
+    private $logger;
+
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
     #[Route('/', name: 'app_projet_index', methods: ['GET'])]
     public function index(ProjetRepository $projetRepository): Response
     {
@@ -22,11 +31,35 @@ class ProjetController extends AbstractController
         ]);
     }
     #[Route('/front', name: 'app_projet_index_front', methods: ['GET'])]
-        public function indexFront(ProjetRepository $projetRepository): Response
+        public function indexFront(ProjetRepository $projetRepository , Request $request , PaginatorInterface $paginator): Response
         {
-            return $this->render('projet/indexFront.html.twig', [
-                'projets' => $projetRepository->findAll(),
-            ]);
+         $query = $projetRepository->findAll();
+             // Handle search
+             $searchQuery = $request->query->get('q');
+             if (!empty($searchQuery)) {
+                  $query = $projetRepository->findByExampleField($searchQuery);
+             }
+             $projets = $paginator->paginate(
+                 $query,
+                 $request->query->getInt('page', 1), // Current page number
+                 3 // Number of items per page
+             );
+             if ($request->isXmlHttpRequest()) {
+                   $paginationHtml = $this->renderView('projet/_paginator.html.twig', ['projets' => $projets]);
+                         $contentHtml = $this->renderView('projet/_project_list.html.twig', ['projets' => $projets]);
+                    // Log to verify if the controller enters this condition
+                            $this->logger->info('Request is AJAX');
+                    return new JsonResponse([
+                         'content' => $contentHtml,
+                         'pagination' => $paginationHtml
+                         ]);
+            } else {
+             // Log to verify if the controller enters this condition
+            $this->logger->info('Request is not AJAX');
+             }
+             return $this->render('projet/indexFront.html.twig', [
+                 'projets' => $projets,
+             ]);
         }
 
     #[Route('/new', name: 'app_projet_new', methods: ['GET', 'POST'])]

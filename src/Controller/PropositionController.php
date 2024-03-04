@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twilio\Rest\Client;
 
 #[Route('/proposition')]
 class PropositionController extends AbstractController
@@ -43,6 +44,17 @@ class PropositionController extends AbstractController
             $proposition->setIdProjet($entityManager->getRepository(Projet::class)->find($id_projet));
             $entityManager->persist($proposition);
             $entityManager->flush();
+             $sid    = "AC31bb73eb632d06babca5d76d125861d9";
+                    $token  = "abcb7ede141d78bc0ec4f04282ca8d5b";
+                    $twilio = new Client($sid, $token);
+
+                    $message = $twilio->messages
+                      ->create("+21696614020", // to
+                        array(
+                          "from" => "+14845145353",
+                          "body" => "Une nouvelle postulation a été ajouté à votre projet !"
+                        )
+                      );
 
             return $this->redirectToRoute('app_proposition_index', ['id_projet' => $id_projet], Response::HTTP_SEE_OTHER);
         }
